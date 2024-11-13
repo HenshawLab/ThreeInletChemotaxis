@@ -38,7 +38,7 @@ NBio = length(BioReps); NRep = length(Reps);
 
 concentrations = [200,49,3.6,0.12,0.0012,0];
 
-chem_location = 'bottom'; % Choices: 'bottom' , 'top'. Location of chemotstimulant relative to the channel
+% chem_location = 'bottom'; % Choices: 'bottom' , 'top'. Location of chemotstimulant relative to the channel
 
 % Choices for preprocessing/analysis - so you don't have to run the whole thing for a
 % specific section. Default: true
