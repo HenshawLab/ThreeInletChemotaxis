@@ -5,7 +5,7 @@ if RUN_BACKGROUND == true
     for iB = BioReps
         
         OutDir = [OutputMainDir 'AnalysisOutput/Bio' num2str(iB) '/Analysis/'];
-        mkdir(OutDir);        
+        mkdir(OutDir); biostr = ['Bio' num2str(iB)];    
 
         for iR = Reps
 
@@ -51,6 +51,7 @@ if RUN_BACKGROUND == true
             params(iR).repname = repname;
             params(iR).NumT = NT;
             params(iR).ND2 = ND2;
+            params(iR).filelist = filelist;
             
             % Preallocation for next steps
             params(iR).XL = [NaN,NaN];
@@ -79,17 +80,18 @@ if RUN_CROPPING == true
 
         % Where the analysis for this bio replicate should be saved to
         OutDir = [OutputMainDir 'AnalysisOutput/Bio' num2str(iB) '/Analysis/'];
-        load([OutDir 'parameters.mat'],'params');
+        load([OutDir 'parameters.mat'],'params'); biostr = ['Bio' num2str(iB)];  
 
         for iR = Reps
 
-            ImgDir = [MainDir biostr '/']; WorkingDir = pwd;
+            ImgDir = [MainDir biostr '/'];
             repname = ['Exp' sprintf('%02d',iR)];
+            filelist = params(iR).filelist;
 
             % Read mid time-point image
             if params(iR).ND2 == true
                 bfr = BioformatsImage([ImgDir filelist(iR).name]);
-                img = mat2gray(getPlane(bfr,1,floor(bfr.sizeT/2))); 
+                img = mat2gray(getPlane(bfr,1,1,floor(bfr.sizeT/2))); 
             else
                 ImgDir = [ImgDir repname '/']; cd(ImgDir);
                 filelist = dir(imgextension); cd(WorkingDir);
@@ -116,7 +118,7 @@ end
 
 %% Particle identification and image flipping
 
-if RUN_PRETRACK == true
+if RUN_PRETRACKPARAMETERS == true
 
     close all
     figure;
@@ -126,9 +128,13 @@ if RUN_PRETRACK == true
         
         % Where the analysis for this bio replicate should be saved to
         OutDir = [OutputMainDir 'AnalysisOutput/Bio' num2str(iB) '/Analysis/'];
-        load([OutDir 'parameters.mat'],'params');
+        load([OutDir 'parameters.mat'],'params'); biostr = ['Bio' num2str(iB)];  
 
         for iR = Reps
+            
+            ImgDir = [MainDir biostr '/'];
+            repname = ['Exp' sprintf('%02d',iR)];
+            filelist = params(iR).filelist;
 
             % Ask if images need to be flipped so that the stimulus is at
             % the top
@@ -145,13 +151,16 @@ if RUN_PRETRACK == true
             % Read mid time-point image
             if params(iR).ND2 == true
                 bfr = BioformatsImage([ImgDir filelist(iR).name]);
-                img = mat2gray(getPlane(bfr,1,floor(bfr.sizeT/2))); 
+                img = mat2gray(getPlane(bfr,1,1,floor(bfr.sizeT/2))); 
             else
                 ImgDir = [ImgDir repname '/']; cd(ImgDir);
                 filelist = dir(imgextension); cd(WorkingDir);
                 img = mat2gray(double(imread([ImgDir filelist(floor(NT/2)).name])));
             end
-
+            
+            if ~exist('BackgroundImg')
+                BackgroundImg = 'mean';
+            end
             % Select background image
             if strcmp(BackgroundImg,'mean')
                 bimg = params(iR).img_mean;
@@ -172,6 +181,9 @@ if RUN_PRETRACK == true
             imshow(img,[]); hold on;
             
             % Invert if particle type is dark
+            if ~exist('particle_type')
+                particle_type = 'dark';
+            end
             if strcmp(particle_type,'dark')
                 img = imcomplement(img);
             end

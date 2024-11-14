@@ -39,8 +39,8 @@ NBio = length(BioReps); NRep = length(Reps);
 % Choices for preprocessing/analysis - so you don't have to run the whole thing for a
 % specific section. Default: true
 RUN_BACKGROUND = true;
-RUN_CROPPING = true;
-RUN_PRETRACKPARAMETERS = true;
+RUN_CROPPING = tr;
+RUN_PRETRACK = true;
 
 RUN_PARTICLELOCATION = true;
 RUN_ANALYSIS = true;
