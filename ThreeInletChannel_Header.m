@@ -60,6 +60,7 @@ accum_width = 200;
 
 BinW = 25; % Bin width (microns) for heatmap
 Exclusion = 75; % Width (+/-) that is excluded from centre of heatmaps for PLOTTING PURPOSES ONLY
+ChannelWidth = 1000; % Channel width in microns (for plotting ONLY)
 
 Mag = 4; % TOTAL Magnification
 PixSize = 6.5; % Pixel size of your camera CHECK
@@ -101,6 +102,7 @@ mkdir(BetaDir); mkdir(BetaFigDir); mkdir(BetaPNGDir);
 %% Run codes
 
 ThreeInletChannel_PreAnalysis;
+ThreeInletChannel_MainAnalysis;
 % Wake_MCD_Analysis;
 % Wake_MCD_BetaPlotting;
 % Wake_MCD_MakeSpreadsheets;
