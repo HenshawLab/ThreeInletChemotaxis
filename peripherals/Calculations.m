@@ -3,14 +3,15 @@ y = cnt(:,2).*PixToMum;
 ymax = size(img,1).*PixToMum;
 
 % Find particles at the top and bottom
-ytop = y(y<=BW);
-ybottom = y(y>=(ymax - BW));
+ytop = y(y<=accum_width);
+ybottom = y(y>=(ymax - accum_width));
 
 Nupper(iR,iframe) = numel(ytop);
 Nlower(iR,iframe) = numel(ybottom);
 
 % CMC calculation
-CMC(iR,iframe) = (mean(y)- (ymax/2))./(ymax/2);
+% (-1) as the top of the image is the attractant location
+CMC(iR,iframe) = (-1).*(mean(y)- (ymax/2))./(ymax/2);
 
 % Heatmap PDFs
 h = histogram(y,'BinEdges',Bins,'normalization','pdf');

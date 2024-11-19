@@ -59,6 +59,7 @@ if RUN_BACKGROUND == true
             params(iR).BPASS = [NaN,NaN];
             params(iR).PKFND = [NaN,NaN];
             params(iR).CNT = NaN;
+            params(iR).FPS = FPS;
 
         end % End of looping over technical replicates
         
@@ -145,7 +146,7 @@ if RUN_PRETRACKPARAMETERS == true
             else
                 F = 1;
             end 
-            params(iR).FLIPUP = F;
+            params(iR).FLIPUD = F;
             clc;
             
             % Read mid time-point image

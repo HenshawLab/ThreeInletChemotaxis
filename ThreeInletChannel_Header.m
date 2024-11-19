@@ -38,12 +38,17 @@ NBio = length(BioReps); NRep = length(Reps);
 
 % Choices for preprocessing/analysis - so you don't have to run the whole thing for a
 % specific section. Default: true
+% Main files
+RUN_PREANALYSIS = true;
+RUN_ANALYSIS = true;
+RUN_PLOTTING = true;
+
+% Sub sections (overidden by above checks)
 RUN_BACKGROUND = true;
 RUN_CROPPING = true;
 RUN_PRETRACKPARAMETERS = true;
 
 RUN_PARTICLELOCATION = true;
-RUN_ANALYSIS = true;
 
 % Set the particle to be 'bright' or 'dark' dependent on your imaging setup
 % Default: dark
@@ -51,9 +56,6 @@ particle_type = 'dark';
 
 % Type of background image for analysis. Default: mean
 BackgroundImg = 'mean'; % Options: mean, median
-
-% Image naming parameters
-% filenaming = 'default'; % 'custom' for images as provided, 'default' if enough leading zeros to put files in correct order
 
 % Width of accumulation region (from boundaries, in microns)
 accum_width = 200;
@@ -65,44 +67,26 @@ ChannelWidth = 1000; % Channel width in microns (for plotting ONLY)
 Mag = 4; % TOTAL Magnification
 PixSize = 6.5; % Pixel size of your camera CHECK
 PixToMum = PixSize/Mag; % Conversion of pixels to microns
+FPS = 1; % Frame rate (frames per second)
 
-BPASS = [1,7]; % Starting values for bpass.m
-PKFND = [5,7]; % Starting values for pkfnd.m
+BPASS = [1,30]; % Starting values for bpass.m
+PKFND = [1,7]; % Starting values for pkfnd.m
 CNT = 7; % Starting value for cntrd.m
 
 %% Outputs - don't change these
 
-% OutputMainDir = 'ThreeInlet_Analysis/'; mkdir(OutputMainDir);
-% Output_Background = [OutputMain 'BackgroundImages/']; 
-% Output_Cropping = [OutputMain 'CroppingLimits/'];
-% Output_Pretrack = [OutputMain 'PretrackingParameters/'];
-% mkdir(Output_Background); mkdir(Output_Cropping); mkdir(Output_Pretrack);
-% OutputDir = [OutputMainDir ExpName '/']; mkdir(OutputDir);
-% PreProcDir = [OutputMainDir 'PreProcessing/']; % Place where preproc will be saved
-% mkdir(PreProcDir);
-% ExperimentOutDir = [OutputMainDir '/' ExpName '/'];
-% mkdir(ExperimentOutDir);
-
-% Output directories
-% mkdir([ExperimentOutDir 'Bacteria_Positions/']);
-% mkdir([ExperimentOutDir 'AccumulationCurves/']);
-% mkdir([ExperimentOutDir 'Preprocessing/']);
-
 FigDir = [OutputMainDir 'Figures/'];
 PNGDir = [FigDir 'PNGS/']; 
 mkdir(FigDir); mkdir(PNGDir);
-mkdir([FigDir 'Heatmaps/']); mkdir([PNGDir 'Heatmaps']);
-mkdir([FigDir 'Heatmaps/CentreOmitted/']); mkdir([PNGDir 'Heatmaps/CentreOmitted/']);
-BetaFigDir = [OutputMainDir 'Beta/Figs/'];
-BetaDir = [OutputMainDir 'Beta/'];
-BetaPNGDir = [OutputMainDir 'Beta/Figs/PNGS/'];
-
-mkdir(BetaDir); mkdir(BetaFigDir); mkdir(BetaPNGDir);
 
 %% Run codes
 
-ThreeInletChannel_PreAnalysis;
-ThreeInletChannel_MainAnalysis;
-% Wake_MCD_Analysis;
-% Wake_MCD_BetaPlotting;
-% Wake_MCD_MakeSpreadsheets;
+if RUN_PREANALYSIS == true
+    ThreeInletChannel_PreAnalysis;
+end
+if RUN_ANALYSIS == true
+    ThreeInletChannel_Analysis;
+end
+if RUN_PLOTTING == true
+    ThreeInletChannel_Plotting;
+end

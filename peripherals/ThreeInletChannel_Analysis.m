@@ -6,11 +6,11 @@ for i = 1:length(Bins) - 1
     centres(i) = (Bins(i) + Bins(i+1))/2;
 end
 
-for iB = Bio
+for iB = BioReps
 
     OutDir = [OutputMainDir 'AnalysisOutput/Bio' num2str(iB) '/Analysis/'];
     biostr = ['Bio' num2str(iB)];
-    load([OutDir 'parameters.mat']);
+    load([OutDir 'parameters_' 'BackgroundImg-' BackgroundImg '.mat'],'params');
 
     % Setup
     NT = params(1).NumT;
@@ -46,7 +46,7 @@ for iB = Bio
         % Check for pretracking
         if RUN_PARTICLELOCATION == true
 
-            if ~exist(pdfmap,'var')
+            if iR == Reps(1)
                 pdfmap = zeros(length(Bins)-1,NT,NRep);
                 pdfmap_nocentre = pdfmap;
             end
@@ -56,14 +56,14 @@ for iB = Bio
             if params(iR).ND2 == true
 
                 bfr = BioformatsImage([ImgDir filelist(iR).name]);
-
+                WB = waitbar(0,'Doing particle location');
                 for iframe = 1:NT
 
                     % Image reading, background subtraction, cropping
                     img0 = mat2gray(getPlane(bfr,1,1,iframe));
                     img = img0 - Bimg;
                     img = img(YL(1):YL(2),:);
-                    if params(iR).FLIP == 1
+                    if params(iR).FLIPUD == 1
                         img = flipud(img);
                     end
 
@@ -81,7 +81,8 @@ for iB = Bio
                 close(WB);
 
             else % If image stack
-
+                WB = waitbar(0,'Doing particle location');
+                ImgDir = [ImgDir repname '/'];
                 for iframe = 1:NT
 
                     % Image reading, background subtraction, cropping
@@ -121,7 +122,7 @@ for iB = Bio
     % Saving/loading
     if RUN_PARTICLELOCATION == true
         save([OutDir 'Experiment_Analysis.mat'], ...
-            'CellPos','Nupper','NLower','CMC', ...
+            'CellPos','Nupper','Nlower','Ncmc', ...
             'Beta_t','Beta_T','time','centres', ...
             'params','pdfmap','pdfmap_nocentre');
     else
