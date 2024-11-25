@@ -26,7 +26,7 @@ for iB = BioReps
         ylabel('Position y \mum','Interpreter','LaTex');
         xlabel('Time t min','Interpreter','LaTex');
         set(gca,'fontsize',10);
-        set(gca,'XLim',[min(time),max(time)],'YLim',[min(centres),max(centres)]);
+        set(gca,'XLim',[min(time),max(time)],'YLim',[min(centres),max(centres)],'YDir','reverse');
         title([ExpName ' Bio ' num2str(iB) ' Rep ' num2str(iR)]);
         colorbar;
         saveas(gcf,[HeatmapDir 'Heatmap_Bio' num2str(iB) '-Replicate' num2str(iR) '.fig']);
@@ -44,7 +44,7 @@ for iB = BioReps
         ylabel('Position y \mum','Interpreter','LaTex');
         xlabel('Time t min','Interpreter','LaTex');
         set(gca,'fontsize',10);
-        set(gca,'XLim',[min(time),max(time)],'YLim',[min(centres),max(centres)]);
+        set(gca,'XLim',[min(time),max(time)],'YLim',[min(centres),max(centres)],'YDir','reverse');
         title([ExpName ' Bio ' num2str(iB) ' Rep ' num2str(iR)]);
         colorbar;
         saveas(gcf,[HeatmapDir 'Heatmap_Bio' num2str(iB) '-Replicate' num2str(iR) '_nocentre.fig']);
