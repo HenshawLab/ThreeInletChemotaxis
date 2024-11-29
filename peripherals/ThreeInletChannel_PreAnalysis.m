@@ -20,6 +20,7 @@ if RUN_BACKGROUND == true
                 NT = bfr.sizeT;
                 ND2 = true;
                 img0 = getPlane(bfr,1,1,1);
+                
             else
                 ImgDir = [ImgDir repname '/']; cd(ImgDir);
                 filelist = dir(imgextension); cd(WorkingDir);
@@ -27,27 +28,51 @@ if RUN_BACKGROUND == true
                 ND2 = false;
                 img0 = imread([ImgDir filelist(1).name]);
             end
+            
+            if RUN_BACKGROUND_MEANONLY == true
+                disp('here')
 
-            % Preallocate memory
-            img_stack = zeros(size(img0,1),size(img0,2),NT);
+                Bimg = zeros(size(img0,1),size(img0,2));
+                % ND2
+                if ND2 == true
+                    for it = 1:NT
+                        img = getPlane(bfr,1,1,it);
+                        Bimg = Bimg + mat2gray(img);
+                    end
+                else
+                    for it = 1:NT
+                        Bimg = Bimg + mat2gray(double(imread([ImgDir filelist(it).name])));
+                    end
+                end
 
-            % Stack images
-            if ND2 == true
-                for it = 1:NT
-                    img = getPlane(bfr,1,1,it);
-                    img_stack(:,:,it) = mat2gray(img);
+                params(iR).img_mean = Bimg./NT;
+
+            else % Run full stack for all background images
+
+                % Preallocate memory
+                img_stack = zeros(size(img0,1),size(img0,2),NT);
+    
+                % Stack images
+                if ND2 == true
+                    for it = 1:NT
+                        img = getPlane(bfr,1,1,it);
+                        img_stack(:,:,it) = mat2gray(img);
+                    end
+                else
+                    for it = 1:NT
+                        img_stack(:,:,it) = mat2gray(double(imread([ImgDir filelist(it).name])));
+                    end
                 end
-            else
-                for it = 1:NT
-                    img_stack(:,:,it) = mat2gray(double(imread([ImgDir filelist(it).name])));
-                end
-            end
+
+                params(iR).img_mean = mean(img_stack,3);
+                params(iR).img_max = max(img_stack,[],3);
+                params(iR).img_min = min(img_stack,[],3);
+
+            end  % End of background method check
 
             % Averaging
-            params(iR).img_median = median(img_stack,3);
-            params(iR).img_mean = mean(img_stack,3);
-            params(iR).img_max = max(img_stack,[],3);
-            params(iR).img_min = min(img_stack,[],3);
+            
+            
             params(iR).repname = repname;
             params(iR).NumT = NT;
             params(iR).ND2 = ND2;

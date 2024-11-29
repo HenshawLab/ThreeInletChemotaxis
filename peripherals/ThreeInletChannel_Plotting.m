@@ -173,7 +173,8 @@ for i = 1:NBio
     pname{1,i} = ['Bio ' num2str(BioReps(i))];
 end
 
-xlabel('Time t min'); ylabel('\beta(t)','Interpreter','Latex');
+xlabel('Time t min'); ylabel('CMC <y>(t)','Interpreter','Latex');
+ylim([-1,1]);
 title([ExpName '<y>, CMC']);
 leg = legend(pline,pname,'location','northeast','box','off');
 

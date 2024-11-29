@@ -18,6 +18,8 @@ h = histogram(y,'BinEdges',Bins,'normalization','pdf');
 pdfmap(:,iframe,iR) = h.Values';
 
 % Heatmap PDFs no centre
-y_nocentre = [y(y <= (ChannelWidth - Exclusion));y(y >= (ChannelWidth + Exclusion))];
+% y_nocentre = y;
+y_nocentre = y(y <= (ChannelWidth - Exclusion) | y >= (ChannelWidth + Exclusion));
+% y_nocentre = [y(y <= (ChannelWidth - Exclusion));y(y >= (ChannelWidth + Exclusion))];
 h = histogram(y_nocentre,'BinEdges',Bins,'normalization','pdf');
 pdfmap_nocentre(:,iframe,iR) = h.Values';
