@@ -5,6 +5,12 @@ clc
 matlabrc; 
 addpath('peripherals');
 
+%% Updates:
+% 241129 - added in variable "RUN_BACKGROUND_MEANONLY" to setup to
+% calculate just the mean background image. Dramatically reduces hardware
+% resource requirements, limits choice of background image to the mean.
+% Other labelling fixes of plots
+
 %% Instructions:
 % Keep in the subfolder "peripherals", as the subcodes are kept there
 % Does not need to be with the main data directory, I have just included an
@@ -26,9 +32,9 @@ addpath('peripherals');
 %% Setup - change these values
 
 % Inputs
-MainDir = 'D:/Alginate/240823/MB_10/'; % Important to end with the "/"
-OutputMainDir = 'TestOutput/'; % Where you would like to save the analysis
-ExpName = 'ExperimentName'; % Name you want on the plot titles/folder name
+MainDir = 'D:/Path-to-Data/'; % Important to end with the "/"
+OutputMainDir = 'D:/Path-To-Output/'; % Where you would like to save the analysis
+ExpName = 'Title for files name of plots etc'; % Name you want on the plot titles/folder name
 WorkingDir = pwd; % Working Directory, where we are currently
 imgextension = '*.nd2'; % Image format (.tiff, .tif, .jpg etc.)
 
@@ -45,6 +51,7 @@ RUN_PLOTTING = true;
 
 % Sub sections (overidden by above checks)
 RUN_BACKGROUND = true;
+RUN_BACKGROUND_MEANONLY = true; % Only compute mean background - recommended for reduced computational load
 RUN_CROPPING = true;
 RUN_PRETRACKPARAMETERS = true;
 
@@ -64,13 +71,13 @@ BinW = 25; % Bin width (microns) for heatmap
 Exclusion = 75; % Width (+/-) that is excluded from centre of heatmaps for PLOTTING PURPOSES ONLY
 ChannelWidth = 1000; % Channel width in microns (for plotting ONLY)
 
-Mag = 4; % TOTAL Magnification
+Mag = 10; % TOTAL Magnification
 PixSize = 6.5; % Pixel size of your camera CHECK
 PixToMum = PixSize/Mag; % Conversion of pixels to microns
 FPS = 1; % Frame rate (frames per second)
 
 BPASS = [1,30]; % Starting values for bpass.m
-PKFND = [1,7]; % Starting values for pkfnd.m
+PKFND = [4,7]; % Starting values for pkfnd.m
 CNT = 7; % Starting value for cntrd.m
 
 %% Outputs - don't change these
