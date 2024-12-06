@@ -1,3 +1,9 @@
+%% Updates
+% 241206 - added in plotting positions in time with colorbar, and load
+% "options.mat" which contains information like pixel conversions etc. for
+% downstream plotting
+
+%%
 close all
 
 %%
@@ -6,6 +12,8 @@ cmc_av = []; beta_t_av = []; beta_T_av = [];
 cmc_err = []; beta_t_err = []; beta_T_err = [];
 CM = jet(2*NBio);
 nb = 1;
+load([OutputMainDir 'options.mat'],'options');
+
 
 for iB = BioReps
 
@@ -182,4 +190,43 @@ saveas(gcf,[FigDir 'AllCMC_Plots.fig']);
 saveas(gcf,[PNGDir 'AllCMC_Plots.png']);
 close(fh);
 
-%%
+%% Plotting particle trajectories
+% Plots every 4th time point and every 3rd particle to avoid cluttering
+
+fh = figure;
+set(fh,'color','white'); box on; hold on;
+CMpoints = jet(2*length(time));
+
+yl2 = [200,200];
+
+for i = 1:size(CellPos,1)
+
+    subplot(1,size(CellPos,1),i); hold on; box on;
+    for it = 1:4:size(CellPos,2)
+        posdata = CellPos{i,it}.*options.PixToMum;
+        plot(posdata(1:3:end,1),posdata(1:3:end,2),'.', ...
+            'markersize',5,'color',CMpoints(2*it,:));
+        yl2(1) = min([yl2(1);posdata(:,2)]);
+        yl2(2) = max([yl2(2);posdata(:,2)]);
+    end
+
+    title(['Replicate ' num2str(options.Reps(i))]);
+    set(gca,'fontsize',12,'YDir','reverse');
+    ylim(yl2);
+    xlim([0,size(params(i).img_mean,2)].*options.PixToMum);
+%     daspect([1,1,1]);
+    xlabel('X, \mum');
+    ylabel('Y, \mum');
+
+end
+
+sgtitle(options.ExpName)
+cb = colorbar;
+ylabel(cb,'Time t min','fontsize',12)% cb.
+colormap('jet');
+caxis([0,time(end)]);
+
+set(gcf,'Position',get(0,'ScreenSize'));
+saveas(gcf,[FigDir 'ParticlePositions.fig']);
+saveas(gcf,[PNGDir 'ParticlePositions.png']);
+close(fh)

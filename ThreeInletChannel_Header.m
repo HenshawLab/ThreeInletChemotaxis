@@ -11,6 +11,10 @@ addpath('peripherals');
 % resource requirements, limits choice of background image to the mean.
 % Other labelling fixes of plots
 
+% 241206 - added in extra plot of particle positions, included
+% "optionsaving.m" which saves an addition structure for accessing
+% information in plotting
+
 %% Instructions:
 % Keep in the subfolder "peripherals", as the subcodes are kept there
 % Does not need to be with the main data directory, I have just included an
@@ -32,9 +36,9 @@ addpath('peripherals');
 %% Setup - change these values
 
 % Inputs
-MainDir = 'D:/Path-to-Data/'; % Important to end with the "/"
-OutputMainDir = 'D:/Path-To-Output/'; % Where you would like to save the analysis
-ExpName = 'Title for files name of plots etc'; % Name you want on the plot titles/folder name
+MainDir = 'D:/Fucoidan/241204/Fucoidan_vesi_1mg/'; % Important to end with the "/"
+OutputMainDir = 'D:/Fucoidan/Fucoidan_Ves_1mg/'; % Where you would like to save the analysis
+ExpName = 'Fucoidan Ves. 1mg/mL'; % Name you want on the plot titles/folder name
 WorkingDir = pwd; % Working Directory, where we are currently
 imgextension = '*.nd2'; % Image format (.tiff, .tif, .jpg etc.)
 
@@ -51,7 +55,7 @@ RUN_PLOTTING = true;
 
 % Sub sections (overidden by above checks)
 RUN_BACKGROUND = true;
-RUN_BACKGROUND_MEANONLY = true; % Only compute mean background - recommended for reduced computational load
+RUN_BACKGROUND_MEANONLY = false; % Only compute mean background - recommended for reduced computational load
 RUN_CROPPING = true;
 RUN_PRETRACKPARAMETERS = true;
 
@@ -85,6 +89,8 @@ CNT = 7; % Starting value for cntrd.m
 FigDir = [OutputMainDir 'Figures/'];
 PNGDir = [FigDir 'PNGS/']; 
 mkdir(FigDir); mkdir(PNGDir);
+
+optionsaving;
 
 %% Run codes
 

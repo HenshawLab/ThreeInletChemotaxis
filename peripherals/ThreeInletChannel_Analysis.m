@@ -1,3 +1,7 @@
+%% Update 241206
+% Fixed time vector to be correct with the frame rate (1/FPS)
+
+%%
 close all
 clear pdfmap pdfmap_nocentre
 
@@ -18,7 +22,7 @@ for iB = BioReps
     Nlower = Nupper; BETA = Nupper; CMC = Nupper;
     CellPos = cell(NRep,NT);
 
-    time = [0:NT-1].*FPS./60; % Time in minutes
+    time = [0:NT-1].*(1/FPS)./60; % Time in minutes
     
     for iR = Reps
 
