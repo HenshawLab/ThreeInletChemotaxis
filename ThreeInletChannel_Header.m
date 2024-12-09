@@ -36,9 +36,9 @@ addpath('peripherals');
 %% Setup - change these values
 
 % Inputs
-MainDir = 'D:/Fucoidan/241204/Fucoidan_vesi_1mg/'; % Important to end with the "/"
-OutputMainDir = 'D:/Fucoidan/Fucoidan_Ves_1mg/'; % Where you would like to save the analysis
-ExpName = 'Fucoidan Ves. 1mg/mL'; % Name you want on the plot titles/folder name
+MainDir = 'D:/WheretheDataIs/'; % Important to end with the "/"
+OutputMainDir = 'D:/PutMyOutputsHere/'; % Where you would like to save the analysis
+ExpName = 'Experiment name and info'; % Name you want on the plot titles/folder name
 WorkingDir = pwd; % Working Directory, where we are currently
 imgextension = '*.nd2'; % Image format (.tiff, .tif, .jpg etc.)
 
@@ -49,8 +49,8 @@ NBio = length(BioReps); NRep = length(Reps);
 % Choices for preprocessing/analysis - so you don't have to run the whole thing for a
 % specific section. Default: true
 % Main files
-RUN_PREANALYSIS = true;
-RUN_ANALYSIS = true;
+RUN_PREANALYSIS = false;
+RUN_ANALYSIS = false;
 RUN_PLOTTING = true;
 
 % Sub sections (overidden by above checks)

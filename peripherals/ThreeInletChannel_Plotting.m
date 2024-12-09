@@ -117,7 +117,7 @@ for iB = BioReps
         xlabel('Time t min'); ylabel(ylab,'Interpreter','LaTex');
         title(minititle);
 
-        sgtitle = [ExpName ' Bio ' num2str(iB)];
+        sgtitle([ExpName ' Bio ' num2str(iB)]);
         leg = legend([plines,pmean],names','location','northeast','box','off');
 
     end
